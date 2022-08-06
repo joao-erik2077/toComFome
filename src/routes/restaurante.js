@@ -2,42 +2,72 @@ const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
 
-const restauranteStorage = require('./../localStorage');
+const con = require('./../database');
 
 router.use(bodyParser.json());
 
 // get one with id
 router.get('/restaurante/:id', (req, res, next) => {
-	const data = JSON.parse(restauranteStorage.getItem(req.params.id));
-
-	res.status(200).send(data);
+	const query = `SELECT * FROM restaurantes WHERE id = ${req.params.id}`;
+	con.query(query, (err, values) => {
+		if (err) {
+			res.status(200).send({
+				'error': err.code,
+				'type': 'mysql'
+			});
+		} else {
+			res.status(200).send({
+				values
+			});
+		}
+	});
 });
 
 //get all restaurants
 router.get('/restaurante', (req, res, next) => {
-	const data = [];
-	for(let i = 0; i < restauranteStorage.length; i++) {
-		data.push(JSON.parse(restauranteStorage.getItem(i)));
-	}
+	const query = 'SELECT * FROM restaurantes';
 
-	res.status(200).send({
-		data
+	con.query(query, (err, values) => {
+		if (err) {
+			res.status(200).send({
+				'error': err.code,
+				'type': 'mysql'
+			});
+		} else {
+			res.status(200).send({
+				values
+			});
+		}
 	});
 });
 
 // post a new restaurant
 router.post('/restaurante', (req, res, next) => {
 
-	const restaurante = {
-		'id': restauranteStorage.length,
-		'nome': req.body.nome,
-		'telefone': req.body.telefone
-	};
-	console.log(req.body);
-	restauranteStorage.setItem(restauranteStorage.length, JSON.stringify(restaurante));
-	res.status(201).send({
-		restaurante
+	if (req.body.cnpj === undefined || req.body.nome === undefined || req.body.telefone === undefined) {
+		res.status(200).send({
+			'error': 'Missing values',
+			'type': 'values'
+		});
+		return;
+	}
+
+	const query = `INSERT INTO restaurantes(cnpj, nome, telefone) VALUES ('${req.body.cnpj}', '${req.body.nome}', '${req.body.telefone}')`;
+	con.query(query, (err, result) => {
+		if (err) {
+			res.status(201).send({
+				'error': err.code,
+				'type': 'mysql'
+			});
+		} else {
+			res.status(201).send({
+				'message': 'Success adding restaurant',
+				'values': req.body
+			});
+		}
 	});
+
+
 });
 
 module.exports = router;
