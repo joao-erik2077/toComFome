@@ -66,8 +66,38 @@ router.post('/restaurante', (req, res, next) => {
 			});
 		}
 	});
+});
 
+router.put('/restaurante/:id', (req, res, next) => {
+	const query = `UPDATE restaurantes SET cnpj = '${req.body.cnpj}', nome = '${req.body.nome}', telefone = '${req.body.telefone}' WHERE id = ${req.params.id}`;
+	con.query(query, (err, values) => {
+		if (err) {
+			res.status(200).send({
+				'error': err.code,
+				'type': 'mysql'
+			});
+		} else {
+			res.status(200).send({
+				'message': 'Changed values'
+			});
+		}
+	});
+});
 
+router.delete('/restaurante/:id', (req, res, next) => {
+	const query = `DELETE FROM restaurantes WHERE id = ${req.params.id}`;
+	con.query(query, (err, values) => {
+		if (err) {
+			res.status(200).send({
+				'error': err.code,
+				'type': 'mysql'
+			});
+		} else {
+			res.status(200).send({
+				'message': 'Deleted values'
+			});
+		}
+	});
 });
 
 module.exports = router;
