@@ -21,15 +21,15 @@ npm start
 ```
 
 ## Http Requisitions
-> `GET` /restaurante
+> `GET` /restaurante  
 > Returns a list of all restaurants
 
-> `GET` /restaurante/{id}
+> `GET` /restaurante/{id}  
 > Returns restaurant based on id
 
-> `POST` /restaurante
+> `POST` /restaurante  
 > Insert the restaurant
-> `BODY`
+> ###### BODY
 > ```json
 > {
 >   "cnpj": "XX.XXX.XXX/XXXX-XX",
@@ -38,9 +38,9 @@ npm start
 > }
 > ```
 
-> `PUT` /restaurante/{id}
+> `PUT` /restaurante/{id}  
 > Update all restaurant data based on id
-> `BODY`
+> ###### BODY
 > ```json
 > {
 >   "cnpj": "XX.XXX.XXX/XXXX-XX",
@@ -49,7 +49,7 @@ npm start
 > }
 > ```
 
-> `DELETE` /restaurante/{id}
+> `DELETE` /restaurante/{id}  
 > Excludes restaurant based on id
 
 ## MySQL Tables
