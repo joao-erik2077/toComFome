@@ -12,16 +12,16 @@ con.connect(err => {
 	if (err) console.log(err);
 	console.log('Connected to MySQL');
 
-	con.query('CREATE DATABASE tocomfome', (err, result) => {
-		if (err == 'ER_DB_CREATE_EXISTS') return;
+	con.query('CREATE DATABASE IF NOT EXISTS tocomfome', (err, result) => {
+		if (err) throw err;
 		console.log('Database created');
 	});
 
 	con.query('USE tocomfome');
 
-	const restaurante = 'CREATE TABLE restaurantes (id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, cnpj VARCHAR(18) NOT NULL, nome VARCHAR(255) NOT NULL, telefone VARCHAR(13))';
+	const restaurante = 'CREATE TABLE IF NOT EXISTS restaurantes (id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, cnpj VARCHAR(18) NOT NULL, nome VARCHAR(255) NOT NULL, telefone VARCHAR(13))';
 	con.query(restaurante, (err, result) => {
-		if (err == 'ER_TABLE_EXISTS_ERROR') return;
+		if (err) throw err;
 		console.log('Table restaurantes created');
 	});
 });
