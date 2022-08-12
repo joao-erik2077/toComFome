@@ -1,0 +1,9 @@
+CREATE DATABASE IF NOT EXISTS tocomfome;
+USE tocomfome;
+
+CREATE TABLE IF NOT EXISTS restaurantes (
+   id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+   cnpj VARCHAR(18) NOT NULL,
+   nome VARCHAR(255) NOT NULL,
+   telefone VARCHAR(13)
+);
